@@ -6,15 +6,17 @@ import { parseStringify } from "../utils";
 import {InputFile} from "node-appwrite/file"
 
 export  const createUser = async (user: CreateUserParams)=>{
+    console.log(`hjh${user.name}`)
    try{
         const newUser =await users.create(
         ID.unique(),
         user.email,
         user.phone,
         undefined,
-        user.name
+        user.name,
+       
     )
-    console.log({newUser})
+   
     return parseStringify(newUser);
 
    } catch(error:any){
@@ -22,9 +24,9 @@ export  const createUser = async (user: CreateUserParams)=>{
             const documents=await users.list([
                 Query.equal('email', [user.email])
             ])
-            return documents.users[0]
+            return documents?.users[0]
         }
-        console.error("An error occurred while creating a new user:", error);
+       
    } 
 
 };
