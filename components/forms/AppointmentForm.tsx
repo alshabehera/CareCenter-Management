@@ -22,8 +22,7 @@ import { SelectItem } from "../ui/select"
 
 
 const AppointmentForm = ({
-    userId, patientId, type,appointment,setOpen
-}: {
+    userId, patientId, type,appointment,setOpen}: {
     //here we are defining the typr of the props we are taking 
     userId: string;
     patientId: string;
@@ -38,19 +37,7 @@ const AppointmentForm = ({
 
     const [isLoading, setIsLoading] = useState(false)
 
-    let buttonLabel;
-    switch (type) {
-        case "cancel":
-            buttonLabel = 'Cancel Appointment'
-            break;
-        case 'schedule':
-            buttonLabel = 'Schedule Appointment'
-            break;
-        default:
-            buttonLabel = 'Submit Appointment'
-            
-    }
-
+  
     const AppointmentFormValidation=getAppointmentSchema(type)
 
     const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -79,12 +66,13 @@ const AppointmentForm = ({
                 break;
             default:
                 status = 'pending';
-                // break;
+                break;
         }
         try {
            if(type==='create' && patientId){
             const appointmentData={
-                userId,patient:patientId,
+                userId,
+                patient:patientId,
                 primaryPhysician:values.primaryPhysician,
                 schedule:new Date(values.schedule),
                 reason:values.reason!,
@@ -126,6 +114,21 @@ const AppointmentForm = ({
 
         
     };
+    let buttonLabel;
+    switch (type) {
+      case 'cancel':
+          buttonLabel="Cancel Appointment";
+          break;
+      case 'create':
+          buttonLabel="Create Appointment";
+          break;
+      case 'schedule':
+          buttonLabel="Schedule Appointment";
+          break;
+      default:
+          break;
+    }
+
     
     return (
         <Form {...form}>
